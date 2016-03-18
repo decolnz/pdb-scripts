@@ -9,6 +9,8 @@ apiurl = 'https://www.peeringdb.com/api/'
 
 parser = argparse.ArgumentParser(description='A small tool for querying PeeringDB.net')
 parser.add_argument('search', help='Search string. ASN, IP or Company Name')
+parser.add_argument('--fac', action='store_true', help='Search by Colocation Facilities')
+parser.add_argument('--ix', action='store_true', help='Search by Internet Exchange')
 parser.add_argument('-v', action='store_true', help='Verbose output')
 args = parser.parse_args()
 
@@ -18,8 +20,8 @@ def fetchResults(url):
     response = ujson.loads(response.text)
     return response
 
+# Matches an ASN and provides info
 def whois(search):
-    # Matches an ASN and provides info_scope
     url = "%snet?asn=%s&depth=2" % (apiurl, search)
     results = fetchResults(url)
     if not results['data']:
@@ -45,8 +47,48 @@ def whois(search):
             elif results['data'][0][key] is not "":
                 print("%s: %s" % (key, results['data'][0][key]))
 
+def findIX(search):
+    url = "%six?name__contains=%s" % (apiurl, search)
+    results = fetchResults(url)
+    if not results['data']:
+        print("No matches for %s" % (search))
+    else:
+        for ix in results['data']:
+            ix_id = ix['id']
+            print("Internet Exchange: %s" % ix['name'])
+            try:
+                print("\tcity: %s" % ix['city'])
+                print("\tcountry: %s" % ix['country'])
+                print("\twebsite: %s" % ix['website'])
+                print("\ttech_phone: %s" % ix['tech_phone'])
+            except:
+                pass
+            if args.v:
+                print("Networks Present:")
+                url2 = "%snetixlan?ix_id=%s" % (apiurl, ix_id)
+                results2 = fetchResults(url2)
+                for net in results2['data']:
+                    print("\t%s - AS%s" % (lookupNet(net['net_id']), net['asn']))
+
+
+def findFac(search):
+    url = "%sfac?name__contains=%s" % (apiurl, search)
+    results = fetchResults(url)
+    if not results['data']:
+        print("No matches for %s" % (search))
+    else:
+        for fac in results['data']:
+            fac_id = fac['id']
+            print("Facility Name: %s" % fac['name'])
+            if args.v:
+                print("Networks:")
+                url2 = "%snetfac?fac_id=%s" % (apiurl, fac_id)
+                results2 = fetchResults(url2)
+                for net in results2['data']:
+                    print("\t%s - AS%s" % (lookupNet(net['net_id']), net['local_asn']))
+
+# Searches the results for Company name and spits out the ASN
 def findASN(search):
-    # Searches the results for Company name and spits out the ASN
     url = "%snet?name__contains=%s" % (apiurl, search)
     results = fetchResults(url)
     if not results['data']:
@@ -67,9 +109,8 @@ def lookupIXLAN(search):
     results = fetchResults(url)
     return results['data'][0]['name']
 
+# Searches pdb for who is peering and at which IX, with a given IP address
 def findIP(ip):
-    # Searches pdb for who is peering and at which IX, with a given IP address
-
     if ip.version == 4:
         url = "%snetixlan?ipaddr4=%s" % (apiurl, ip)
     elif ip.version == 6:
@@ -83,10 +124,13 @@ def findIP(ip):
             netName = lookupNet(result['net_id'])
             ixlanName = lookupIXLAN(result['ixlan_id'])
             if result['is_rs_peer'] == "true":
-                RS = " with the route servers"
+                RS = "with the route servers "
             else:
                 RS = ""
-            print("%s - AS%s is peering%s at %s on %s" % (netName, result['asn'], RS, ixlanName, ip))
+            print("%s - AS%s is peering %sat %s on %s" % (netName, result['asn'], RS, ixlanName, ip))
+            if args.v:
+                for key in sorted(result):
+                    print("%s: %s" % (key, result[key]))
 
 
 def main():
@@ -107,6 +151,10 @@ def main():
 
     if ip is not None:
         findIP(ip)
+    elif args.ix:
+        findIX(search)
+    elif args.fac:
+        findFac(search)
     elif search.isdigit():
         whois(search)
     else:

@@ -1,14 +1,14 @@
 PeeringDB Scripts
 =================
 
-Random scripts resulting from playing around with the new [PeeringDB](https://peeringdb.net) APIs
+Random scripts resulting from playing around with the new [PeeringDB](https://peeringdb.com) [APIs](https://www.peeringdb.com/apidocs/)
 
 Usage:
 ------
 
     usage: pdbwhois.py [-h] [--fac] [--ix] [-v] search
 
-    A small tool for querying PeeringDB.net
+    A small tool for querying PeeringDB.com
 
     positional arguments:
       search      Search string. ASN, IP or Company Name

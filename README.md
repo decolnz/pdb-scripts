@@ -6,7 +6,7 @@ Random scripts resulting from playing around with the new [PeeringDB](https://pe
 Usage:
 ------
 
-    usage: pdbwhois.py [-h] [-v] search
+    usage: pdbwhois.py [-h] [--fac] [--ix] [-v] search
 
     A small tool for querying PeeringDB.net
 
@@ -15,7 +15,10 @@ Usage:
 
     optional arguments:
       -h, --help  show this help message and exit
+      --fac       Search by Colocation Facilities
+      --ix        Search by Internet Exchange
       -v          Verbose output
+
 
 Examples:
 --------

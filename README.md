@@ -21,9 +21,7 @@ Examples:
 --------
 
     $ ./pdbwhois.py bbc
-
     BBC: AS2818 in Global
-
     BBC R&D: AS31459 in Regional
 
     $ ./pdbwhois.py 2818

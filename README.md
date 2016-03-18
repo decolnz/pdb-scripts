@@ -11,7 +11,7 @@ Usage:
     A small tool for querying PeeringDB.net
 
     positional arguments:
-      search      Search string. ASN or Company Name
+      search      Search string. ASN, IP or Company Name
 
     optional arguments:
       -h, --help  show this help message and exit
@@ -19,6 +19,12 @@ Usage:
 
 Examples:
 --------
+
+    $ ./pdbwhois.py 2001:7f8:4::ede3:1
+    aTech Media - AS60899 is peering at LINX Juniper LAN on 2001:7f8:4::ede3:1
+
+    $ ./pdbwhois.py 195.66.224.244
+    Astutium Ltd - AS29527 is peering at LINX Juniper LAN on 195.66.224.244
 
     $ ./pdbwhois.py bbc
     BBC: AS2818 in Global

@@ -3,11 +3,12 @@ import requests
 import ujson
 import sys
 import argparse
+import ipaddress
 
 apiurl = 'https://www.peeringdb.com/api/'
 
 parser = argparse.ArgumentParser(description='A small tool for querying PeeringDB.net')
-parser.add_argument('search', help='Search string. ASN or Company Name')
+parser.add_argument('search', help='Search string. ASN, IP or Company Name')
 parser.add_argument('-v', action='store_true', help='Verbose output')
 args = parser.parse_args()
 
@@ -44,7 +45,6 @@ def whois(search):
             elif results['data'][0][key] is not "":
                 print("%s: %s" % (key, results['data'][0][key]))
 
-
 def findASN(search):
     # Searches the results for Company name and spits out the ASN
     url = "%snet?name__contains=%s" % (apiurl, search)
@@ -55,6 +55,40 @@ def findASN(search):
         for result in results['data']:
             print("%s: AS%s in %s" % (result['name'], result['asn'], result['info_scope']))
 
+def lookupNet(search):
+    url = "%snet?id=%s" % (apiurl, search)
+    results = fetchResults(url)
+    return results['data'][0]['name']
+
+def lookupIXLAN(search):
+    url = "%sixlan?id=%s" % (apiurl, search)
+    results = fetchResults(url)
+    url = "%six?id=%s" % (apiurl, results['data'][0]['ix_id'])
+    results = fetchResults(url)
+    return results['data'][0]['name']
+
+def findIP(ip):
+    # Searches pdb for who is peering and at which IX, with a given IP address
+
+    if ip.version == 4:
+        url = "%snetixlan?ipaddr4=%s" % (apiurl, ip)
+    elif ip.version == 6:
+        url = "%snetixlan?ipaddr6=%s" % (apiurl, ip)
+
+    results = fetchResults(url)
+    if not results['data']:
+        print("No matches for %s" % (ip))
+    else:
+        for result in results['data']:
+            netName = lookupNet(result['net_id'])
+            ixlanName = lookupIXLAN(result['ixlan_id'])
+            if result['is_rs_peer'] == "true":
+                RS = " with the route servers"
+            else:
+                RS = ""
+            print("%s - AS%s is peering%s at %s on %s" % (netName, result['asn'], RS, ixlanName, ip))
+
+
 def main():
 
     search = args.search
@@ -64,7 +98,16 @@ def main():
     if (search[0:2] == "AS" or search[0:2] == "as") and search[2:].isdigit():
         search = search[2:]
 
-    if search.isdigit():
+    # See if search string is an IP address
+    ip = None
+    try:
+        ip = ipaddress.ip_address(search)
+    except:
+        pass
+
+    if ip is not None:
+        findIP(ip)
+    elif search.isdigit():
         whois(search)
     else:
         findASN(search)

@@ -13,11 +13,11 @@ Clone the git repository:
 Install python3 and the required python modules if you don't already have them:
 
     sudo apt-get install python3 python3-pip
-    sudo pip3 install -r pdb-scripts/requirements.txt
+    sudo pip3 install -r ./pdb-scripts/requirements.txt
 
 Optionally add an alias for the script to your ~/.bashrc for easier execution
 
-    echo "alias pdb='/path/to/pdbwhois.py' >> ~/.bashrc"
+    echo "alias pdb='`pwd`/pdb-scripts/pdbwhois.py'" >> ~/.bashrc
 
 Usage:
 ------

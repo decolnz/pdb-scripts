@@ -16,8 +16,12 @@ args = parser.parse_args()
 
 
 def fetchResults(url):
-    response = requests.get(url)
-    response = ujson.loads(response.text)
+    try:
+        response = requests.get(url)
+        response = ujson.loads(response.text)
+    except:
+        print("Error: Didn't receive a valid response when calling %s" % url)
+        exit(1)
     return response
 
 # Matches an ASN and provides info

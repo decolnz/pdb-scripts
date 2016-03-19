@@ -3,6 +3,21 @@ PeeringDB Scripts
 
 Random scripts resulting from playing around with the new [PeeringDB](https://peeringdb.com) [APIs](https://www.peeringdb.com/apidocs/)
 
+Install:
+---------------
+
+Clone the git repository
+    git clone https://github.com/detobate/pdb-scripts.git
+
+Install python3 and the required python modules if you don't already have them:
+
+    sudo apt-get install python3 python3-pip
+    sudo pip3 install -r pdb-scripts/requirements.txt
+
+Optionally add an alias for the script to your ~/.bashrc for easier execution
+
+    echo "alias pdb='/path/to/pdbwhois.py' >> ~/.bashrc"
+
 Usage:
 ------
 

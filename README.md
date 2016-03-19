@@ -6,7 +6,8 @@ Random scripts resulting from playing around with the new [PeeringDB](https://pe
 Install:
 ---------------
 
-Clone the git repository
+Clone the git repository:
+
     git clone https://github.com/detobate/pdb-scripts.git
 
 Install python3 and the required python modules if you don't already have them:

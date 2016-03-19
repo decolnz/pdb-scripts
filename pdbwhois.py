@@ -8,7 +8,7 @@ import ipaddress
 apiurl = 'https://www.peeringdb.com/api/'
 
 parser = argparse.ArgumentParser(description='A small tool for querying PeeringDB.net')
-parser.add_argument('search', help='Search string. ASN, IP or Company Name')
+parser.add_argument('search', metavar='<search_term>', help='Search string. ASN, IP or Company Name')
 parser.add_argument('--fac', action='store_true', help='Search by Colocation Facilities')
 parser.add_argument('--ix', action='store_true', help='Search by Internet Exchange')
 parser.add_argument('-v', action='store_true', help='Verbose output')
@@ -47,28 +47,37 @@ def whois(search):
             elif results['data'][0][key] is not "":
                 print("%s: %s" % (key, results['data'][0][key]))
 
+# Searches for an IX and provides info
 def findIX(search):
-    url = "%six?name__contains=%s" % (apiurl, search)
+    # First try to match exact name
+    url = "%six?name=%s" % (apiurl, search)
     results = fetchResults(url)
+    # If we find nothing, do a loose match on the search
     if not results['data']:
-        print("No matches for %s" % (search))
-    else:
-        for ix in results['data']:
-            ix_id = ix['id']
-            print("Internet Exchange: %s" % ix['name'])
-            try:
-                print("\tcity: %s" % ix['city'])
-                print("\tcountry: %s" % ix['country'])
-                print("\twebsite: %s" % ix['website'])
-                print("\ttech_phone: %s" % ix['tech_phone'])
-            except:
-                pass
-            if args.v:
-                print("Networks Present:")
-                url2 = "%snetixlan?ix_id=%s" % (apiurl, ix_id)
-                results2 = fetchResults(url2)
-                for net in results2['data']:
-                    print("\t%s - AS%s" % (lookupNet(net['net_id']), net['asn']))
+        url = "%six?name__contains=%s" % (apiurl, search)
+        results = fetchResults(url)
+        if not results['data']:
+            print("No matches for %s" % (search))
+            return  # Nothing found return to main()
+
+    for ix in results['data']:
+        ix_id = ix['id']
+        print("Internet Exchange: %s" % ix['name'])
+        try:
+            print("\tcity: %s" % ix['city'])
+            print("\tcountry: %s" % ix['country'])
+            print("\twebsite: %s" % ix['website'])
+            print("\ttech_phone: %s" % ix['tech_phone'])
+        except:
+            pass
+
+        # If verbose, find out what networks are present on the IXLAN
+        if args.v:
+            print("Networks Present:")
+            url2 = "%snetixlan?ix_id=%s" % (apiurl, ix_id)
+            results2 = fetchResults(url2)
+            for net in results2['data']:
+                print("\t%s - AS%s" % (lookupNet(net['net_id']), net['asn']))
 
 
 def findFac(search):

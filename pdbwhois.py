@@ -75,6 +75,16 @@ def findIX(search):
         except:
             pass
 
+        for proto in ('IPv4', 'IPv6'):
+            ixpfx_url = "%sixpfx?ix_id=%s&protocol=%s" % (apiurl, ix_id, proto)
+            ixpfx_results = fetchResults(ixpfx_url)
+            for p in ixpfx_results['data']:
+                try:
+                    print("\t%s: %s" % (proto, p['prefix']))
+                except:
+                    # If we can't find a v4 or v6 subnet at this IX, gracefully pass
+                    pass
+
         # If verbose, find out what networks are present on the IXLAN
         if args.v:
             print("Networks Present:")

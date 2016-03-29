@@ -15,9 +15,9 @@ Install python3 and the required python modules if you don't already have them:
     sudo apt-get install python3 python3-pip
     sudo pip3 install -r ./pdb-scripts/requirements.txt
 
-Optionally add an alias for the script to your ~/.bashrc for easier execution
+Optionally add an alias for the script to your ~/.bash_profile for easier execution
 
-    echo "alias pdb='`pwd`/pdb-scripts/pdbwhois.py'" >> ~/.bashrc
+    echo "alias pdb='`pwd`/pdb-scripts/pdbwhois.py'" >> ~/.bash_profile
 
 Usage:
 ------

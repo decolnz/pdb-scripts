@@ -1,7 +1,7 @@
-PeeringDB Scripts
+PeeringDB Tool
 =================
 
-Random scripts resulting from playing around with the new [PeeringDB](https://peeringdb.com) [APIs](https://www.peeringdb.com/apidocs/)
+A small search tool resulting from playing around with the new [PeeringDB](https://peeringdb.com) [APIs](https://www.peeringdb.com/apidocs/)
 
 Install:
 ---------------

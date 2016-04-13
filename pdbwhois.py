@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import requests
 import ujson
-import sys
 import argparse
 import ipaddress
 

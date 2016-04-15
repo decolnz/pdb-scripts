@@ -22,19 +22,18 @@ Optionally add an alias for the script to your ~/.bash_profile for easier execut
 Usage:
 ------
 
-    usage: pdbwhois.py [-h] [--fac] [--ix] [-v] search
+    usage: pdbwhois.py [-h] [--fac] [--ix] [-v] <search_term>
 
     A small tool for querying PeeringDB.com
 
     positional arguments:
-      search      Search string. ASN, IP or Company Name
+    <search_term>  Search string. ASN, IP or Company Name
 
     optional arguments:
-      -h, --help  show this help message and exit
-      --fac       Search by Colocation Facilities
-      --ix        Search by Internet Exchange
-      -v          Verbose output
-
+    -h, --help     show this help message and exit
+    --fac          Search by Colocation Facilities
+    --ix           Search by Internet Exchange
+    -v             Verbose output
 
 Examples:
 --------

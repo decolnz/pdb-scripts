@@ -96,3 +96,56 @@ Examples:
     status: ok
     updated: 2016-03-14T20:57:33Z
     website: http://www.bbc.co.uk
+    
+    Facility Name: Linxdatacenter (Warsaw)
+
+    $ pdb --ix lon1
+    Internet Exchange: LINX LON1
+        city: London
+        country: GB
+        website: https://www.linx.net/
+        tech_phone: +44 20 76453500
+        IPv4: 195.66.224.0/22
+        IPv4: 195.66.230.0/26
+        IPv6: 2001:7f8:4::/64
+
+    $ pdb --ix lon1 -v
+    Internet Exchange: LINX LON1
+        city: London
+        country: GB
+        website: https://www.linx.net/
+        tech_phone: +44 20 76453500
+        IPv4: 195.66.224.0/22
+        IPv4: 195.66.230.0/26
+        IPv6: 2001:7f8:4::/64
+    Networks Present:
+        Swisscom - AS3303
+        GTT Communications (AS3257) - AS3257
+        Renesys - AS64597
+        Telecom Italia Sparkle - AS6762
+        Level3 formerly Global Crossing - AS3549
+        Easynet Global Services - AS4589
+        NetCologne - AS8422
+        Global Cloud Xchange (f.k.a. FLAG Telecom) - AS15412
+        Timico Limited - AS8607
+        RCS & RDS - AS8708
+        Claranet - AS8426
+        Free SAS - AS12322
+        sunrise, TDC Switzerland AG - AS6730
+        RETN - AS9002
+    ...
+    
+    
+    $ pdb --fac LD5 -v
+    Facility Name: Equinix London Slough (LD5)
+    Networks:
+        Equinix UK - AS21371
+        Oracle RightNow - AS15179
+        Smoothstone/West IP Communications - AS32880
+        Nuco Technologies Ltd - AS45014
+        Nuco Technologies Ltd - AS33854
+        Exponential-e Ltd - AS25180
+        UK Webhosting Ltd - AS198047
+        EE - AS12576
+        IX Reach - IIX - AS43531
+    ...
